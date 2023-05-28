@@ -1,0 +1,3 @@
+Enter your text,output,flag,username,timestamp
+"I got “Pull access denied” for ECR, how to fix it?","'
+If you get a ""Pull access denied"" error for ECR, it indicates that the task execution role for your app needs to be granted permission to pull image from your ECR repo. Your ECR repo’s permission (policy json) needs to be revised to add your task execution role’s ARN. Reach out to your DevOps resource to add this entry in your ECR repo’s policy json.",,,2023-05-17 23:37:27.587838
