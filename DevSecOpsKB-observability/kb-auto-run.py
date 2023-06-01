@@ -1,4 +1,4 @@
-from llama_index import SimpleDirectoryReader, LLMPredictor, PromptHelper, ServiceContext, GPTVectorStoreIndex
+from llama_index import SimpleDirectoryReader, LLMPredictor, ServiceContext, GPTVectorStoreIndex
 from langchain.chat_models import ChatOpenAI
 from dotenv import load_dotenv
 import os
@@ -13,30 +13,28 @@ logging.basicConfig()
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-graphsignal.configure(api_key=os.getenv('graphsignal_api_key'), deployment='DevSecOpsKB')
+graphsignal.configure(api_key=os.getenv('GRAPHSIGNAL_API_KEY'), deployment='DevSecOpsKB')
 
-#constraint parameters
-max_input_size = 4096
-num_outputs = 512
-max_chunk_overlap = 20
-chunk_size_limit = 600
-
-#allows the user to explicitly set certain constraint parameters
-prompt_helper = PromptHelper(max_input_size, num_outputs, max_chunk_overlap, chunk_size_limit=chunk_size_limit)
+# set context window
+context_window = 4096
+# set number of output tokens
+num_output = 512
 
 #LLMPredictor is a wrapper class around LangChain's LLMChain that allows easy integration into LlamaIndex
-llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name="gpt-3.5-turbo", max_tokens=num_outputs))
+llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name="gpt-3.5-turbo", max_tokens=num_output))
 
 #constructs service_context
-service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, prompt_helper=prompt_helper)
+service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, context_window=context_window, num_output=num_output)
+
+#set the global service context object
+from llama_index import set_global_service_context
+set_global_service_context(service_context)
 
 #loads data from the specified directory path
 documents = SimpleDirectoryReader("./data").load_data()
 
 #when first building the index
-index = GPTVectorStoreIndex.from_documents(
-    documents, service_context=service_context
-)
+index = GPTVectorStoreIndex.from_documents(documents)
 
 def data_querying(input_text):
     
@@ -72,4 +70,5 @@ while time.time() - start_time < 10:  # let it run for 30 minutes (1800 seconds)
         logger.error("Error during data query", exc_info=True)
 
     time.sleep(5 * random.random())
+    
     
