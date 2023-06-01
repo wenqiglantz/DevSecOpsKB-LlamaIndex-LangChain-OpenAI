@@ -60,7 +60,7 @@ questions = [
 
 start_time = time.time()
 
-while time.time() - start_time < 10:  # let it run for 30 minutes (1800 seconds)
+while time.time() - start_time < 1800:  # let it run for 30 minutes (1800 seconds)
     try:
         num = random.randint(0, len(questions) - 1)
         print("Question: ", questions[num])
