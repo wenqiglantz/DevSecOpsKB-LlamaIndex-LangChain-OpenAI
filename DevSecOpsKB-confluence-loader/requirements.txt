@@ -1,0 +1,9 @@
+python-dotenv
+openai
+langchain
+llama-index==0.6.18
+llama-hub
+pinecone-client
+gradio
+graphsignal
+transformers
