@@ -7,3 +7,11 @@ pinecone-client
 gradio
 graphsignal
 transformers
+rlPyCairo
+pycairo
+pytesseract
+Pillow
+svglib
+tesseract
+pytesseract
+docx2txt
