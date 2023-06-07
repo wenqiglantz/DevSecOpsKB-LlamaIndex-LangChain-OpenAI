@@ -68,11 +68,14 @@ def data_querying(input_text):
     
     return response.response
 
+#construct Gradio UI
 iface = gr.Interface(fn=data_querying,
-                     inputs=gr.components.Textbox(lines=7, label="Enter your question"),
+                     inputs=gr.components.Textbox(lines=5, label="Enter your question"),
                      outputs="text",
                      title="Wenqi's DevSecOps Knowledge Base")
 
-#passes in data directory
+#calls data_ingestion_indexing for data ingestion and indexing
 index = data_ingestion_indexing()
-iface.launch(share=False)
+
+#launch Gradio UI, disable share, make app accessible on docker local network by setting server_name to "0.0.0.0".
+iface.launch(share=False, server_name="0.0.0.0")
