@@ -51,7 +51,11 @@ def data_ingestion_indexing():
     documents = loader.load_data(space_key=space_key, page_ids=[], include_attachments=True)
 
     # call pinecone to create index, dimension is for text-embedding-ada-002
-    pinecone.create_index("confluence-wiki", dimension=1536, metric="cosine", pod_type="Starter")
+    try:
+        pinecone.create_index("confluence-wiki", dimension=1536, metric="cosine", pod_type="Starter")
+    except Exception:
+        # most likely index already exists
+        pass
     pinecone_index = pinecone.Index("confluence-wiki")
 
     # build the PineconeVectorStore and GPTVectorStoreIndex
