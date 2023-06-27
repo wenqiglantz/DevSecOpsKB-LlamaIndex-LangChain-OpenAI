@@ -1,12 +1,17 @@
-from llama_index import SimpleDirectoryReader, LLMPredictor, StorageContext, ServiceContext, GPTVectorStoreIndex, load_index_from_storage
+from llama_index import SimpleDirectoryReader, LLMPredictor, GPTVectorStoreIndex, load_index_from_storage
+from llama_index.storage.storage_context import StorageContext
+from llama_index.indices.service_context import ServiceContext
 from langchain.chat_models import ChatOpenAI
 from dotenv import load_dotenv
+import openai
 import gradio as gr
-import sys
+import sys, os
 import logging
 
 #loads dotenv lib to retrieve API keys from .env file
 load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # enable INFO level logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
