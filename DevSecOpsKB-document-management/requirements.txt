@@ -1,0 +1,7 @@
+python-dotenv
+openai
+langchain
+llama-index
+pypdf
+PyCryptodome
+gradio
