@@ -11,3 +11,7 @@ Refer to my blog [A Glimpse into the Mechanics of LlamaIndex Apps Through the Le
 ## DevSecOpsKB-confluence-loader
 
 Refer to my blog [Semantic Search in Confluence Wiki With LlamaIndex and Pinecone](https://betterprogramming.pub/semantic-search-in-confluence-wiki-with-llamaindex-and-pinecone-eb39c1d8c004?sk=596d82ad5b5b64b3be7e06a857872d8f) for details.
+
+# DevSecOpsKB-document-management
+
+Refer to my blog [Refreshing Private Data Sources with LlamaIndex Document Management](https://betterprogramming.pub/refreshing-private-data-sources-with-llamaindex-document-management-1d1f1529f5eb?sk=4d80ac08510b688443e7e7292b877797) for details.
