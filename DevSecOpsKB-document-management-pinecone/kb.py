@@ -54,7 +54,7 @@ def load_index(directory_path):
         logging.info("Refreshing docs.")
         refreshed_docs = loaded_index.refresh_ref_docs(documents, update_kwargs={"delete_kwargs": {'delete_from_docstore': True}})
         print(refreshed_docs)
-        logging.info('Number of newly inserted/refreshed docs: ', sum(refreshed_docs))
+        print('Number of newly inserted/refreshed docs: ', sum(refreshed_docs))
     
     except Exception:
         logging.info("Index not found. Creating a new one...")
