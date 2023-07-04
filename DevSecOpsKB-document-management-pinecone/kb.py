@@ -42,27 +42,24 @@ def load_index(directory_path):
     documents = SimpleDirectoryReader(directory_path, filename_as_id=True).load_data()
     print(f"loaded {len(documents)} documents")
 
-    # load the pinecone index first, check if it contains document or not, if not, refresh it by loading the docs from documents.
-    try:
-        logging.info("loading index from Pinecone.")
-        index = pinecone.Index("devsecops-wiki")
-        vector_store = PineconeVectorStore(pinecone_index=index)
-        loaded_index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
-        logging.info("Index loaded from Pinecone with doc size " + str(len(loaded_index.docstore.docs)))
-
-        # Run refresh_ref_docs method to check for document updates
-        logging.info("Refreshing docs.")
-        refreshed_docs = loaded_index.refresh_ref_docs(documents, update_kwargs={"delete_kwargs": {'delete_from_docstore': True}})
-        print(refreshed_docs)
-        print('Number of newly inserted/refreshed docs: ', sum(refreshed_docs))
-    
-    except Exception:
+    indexes = pinecone.list_indexes()
+    print(indexes)
+    if 'devsecops-wiki' not in indexes:
         logging.info("Index not found. Creating a new one...")
         pinecone.create_index("devsecops-wiki", dimension=1536, metric="cosine", pod_type="Starter")
-        index = pinecone.Index("devsecops-wiki")
-        vector_store = PineconeVectorStore(pinecone_index=index)
-        loaded_index = GPTVectorStoreIndex.from_documents(documents, storage_context=StorageContext.from_defaults(vector_store=vector_store))
-        logging.info("New index created and persisted to storage.")
+        vector_store = PineconeVectorStore(pinecone.Index("devsecops-wiki"))
+        storage_context = StorageContext.from_defaults(vector_store = vector_store)
+        loaded_index = VectorStoreIndex.from_documents(documents, storage_context=storage_context)
+        logging.info("New index created and persisted to Pinecone.")
+    else:
+        logging.info("Loading index from Pinecone.")    
+        vector_store = PineconeVectorStore(pinecone.Index("devsecops-wiki"))
+        loaded_index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
+        logging.info("Refreshing docs.")
+        #refreshed_docs = loaded_index.refresh_ref_docs(documents, update_kwargs={"delete_kwargs": {'delete_from_docstore': True}})
+        refreshed_docs = loaded_index.refresh_ref_docs(documents) #TODO
+        print(refreshed_docs)
+        print('Number of newly inserted/refreshed docs: ', sum(refreshed_docs))
 
     return loaded_index
     
