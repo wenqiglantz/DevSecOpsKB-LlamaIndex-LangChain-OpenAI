@@ -1,0 +1,8 @@
+python-dotenv
+openai
+langchain
+llama-index==0.6.38
+ndg-httpsclient
+pypdf
+PyCryptodome
+gradio
