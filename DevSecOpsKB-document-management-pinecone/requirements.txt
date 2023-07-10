@@ -1,7 +1,7 @@
 python-dotenv
 openai
 langchain
-llama-index
+llama-index==0.6.34.post1
 ndg-httpsclient
 pypdf
 PyCryptodome
