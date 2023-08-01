@@ -8,17 +8,17 @@ os.environ["OPENAI_API_KEY"] = 'YOUR-OPENAI-API-KEY'
 
 def create_service_context():
 
-    #constraint parameters
-    max_input_size = 4096
-    num_outputs = 512
-    max_chunk_overlap = 20
-    chunk_size_limit = 600
+    #constraint parameters for llama_index 7.16
+    context_window = 4096
+    num_output = 512
+    chunk_overlap_ratio = 0.1
+    chunk_size_limit = 1024
 
     #allows the user to explicitly set certain constraint parameters
-    prompt_helper = PromptHelper(max_input_size, num_outputs, max_chunk_overlap, chunk_size_limit=chunk_size_limit)
+    prompt_helper = PromptHelper(context_window, num_output, chunk_overlap_ratio, chunk_size_limit=chunk_size_limit)
 
     #LLMPredictor is a wrapper class around LangChain's LLMChain that allows easy integration into LlamaIndex
-    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name="gpt-3.5-turbo", max_tokens=num_outputs))
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name="gpt-3.5-turbo", max_tokens=num_output))
 
     #constructs service_context
     service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, prompt_helper=prompt_helper)
